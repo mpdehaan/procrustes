@@ -5,7 +5,8 @@ class Procrustes::TestCase {
 
     use Method::Signatures::Simple name => 'action';
     use Procrustes::TestCaseFailure;
-    use Try::Tiny;
+
+
     use DateTime;
 
     has case_name  => (isa => 'Str',      is => 'rw', required => 1);
@@ -15,7 +16,7 @@ class Procrustes::TestCase {
     action run($test_results) {
 
         my $start = DateTime->now();
-        try {
+        eval {
             my $result = $self->test_block()->();
             my $end = DateTime->now();
             $self->duration($end->epoch() - $start->epoch());
@@ -25,12 +26,13 @@ class Procrustes::TestCase {
             } else {
                 return $test_results->add_success($self);
             }
-        } catch {
+        } or do {
             # TODO: when we have a traceback, log a *short* traceback using Devel::StackTrace
+            my $error = $@;
             my $end = DateTime->now();
             $self->duration($end->epoch() - $start->epoch());
             my $err = $_;
-            my $failure = Procrustes::TestCaseFailure->new(case => $self, error => $_);
+            my $failure = Procrustes::TestCaseFailure->new(case => $self, error => $error);
             return $test_results->add_failure($failure);
         };
 

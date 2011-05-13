@@ -1,8 +1,6 @@
 
 use MooseX::Declare;
 
-# TODO: This is really a TestSuite class
-
 class Procrustes::TestPlan {
 
     use Method::Signatures::Simple name => 'action';
@@ -10,10 +8,8 @@ class Procrustes::TestPlan {
     use Procrustes::TestResults;
 
     # data attributes
-    has plan_name   => (isa => 'Str', is => 'rw', required => 0, init_arg => undef,);
-    has test_cases  => (isa => 'ArrayRef[Procrustes::TestCase]', is => 'rw', init_arg => undef, default => sub { 
-         return [] }
-    );
+    has plan_name   => (isa => 'Str', is => 'rw', required => 0, default => '', init_arg => undef,);
+    has test_cases  => (isa => 'ArrayRef[Procrustes::TestCase]', is => 'rw');
 
     # produce a single test case, analogous to a RSpec "describe do", more or less
     action _create_single_test($case_name, $test_block) {
@@ -41,13 +37,17 @@ class Procrustes::TestPlan {
     }
     
     action go() {
-         my $test_results = Procrustes::TestResults->new();
+         my $test_results = Procrustes::TestResults->new(plan_name => $self->plan_name());
          # TODO: create some sort of test result object that each test case adds to...
+         print "\n";
+         print "**** EXECUTING PLAN: " . $self->plan_name() . "\n";
          foreach my $test (@{$self->test_cases()}) {
-               print "**** running: " . $test->case_name() . "\n";      
+               print "    -> running: " . $test->case_name() . "\n";      
                $test->run($test_results);
          }
          return $test_results;
     }
 
 }
+
+
