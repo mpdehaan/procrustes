@@ -5,6 +5,7 @@ use MooseX::Declare;
 
 class AdvancedExample extends Procrustes::TestPlugin {
 
+    use Procrustes::TestSuite;
     use Procrustes::TestPlan;
     use Method::Signatures::Simple name => 'action';
 
@@ -53,14 +54,6 @@ class AdvancedExample extends Procrustes::TestPlugin {
 
 }
 
-######
-# to execute just one test:
-
-unless (caller()) {
-   use Procrustes::TestSuite;
-   my $suite = Procrustes::TestSuite->new();
-   $suite->add_plugin(AdvancedExample->new())->go()->report();
-}
-
-
+# to execute just one test if run as a script and not a module:
+Procrustes::TestSuite->run_single(AdvancedExample->new()) unless caller();
 1;

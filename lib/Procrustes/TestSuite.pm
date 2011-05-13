@@ -27,6 +27,11 @@ class Procrustes::TestSuite {
         return $self;
     }
 
+    # shorthand to run a single plugin, with no others
+    action run_single($plugin) {
+        $self->new()->add_plugin($plugin)->go()->report();
+    }
+
     # run the plans that all of the plugins have already defined
     action go() {
 
