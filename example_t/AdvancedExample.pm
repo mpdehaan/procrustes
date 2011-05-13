@@ -53,4 +53,14 @@ class AdvancedExample extends Procrustes::TestPlugin {
 
 }
 
+######
+# to execute just one test:
+
+unless (caller()) {
+   use Procrustes::TestSuite;
+   my $suite = Procrustes::TestSuite->new();
+   $suite->add_plugin(AdvancedExample->new())->go()->report();
+}
+
+
 1;

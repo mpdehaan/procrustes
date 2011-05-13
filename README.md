@@ -41,12 +41,21 @@ Usage
 
 setup() and teardown() capabilities are also supported.
 
-Limitations
-===========
+Examples
+========
 
-Each TestPlugin defines exactly one "TestPlan", which has an English
-name, with individual ordered tasks in it.  If you need to share things between one test to another,
-you can.  See "AdvancedExample" in "examples_t".
+The examples_t directory contains several examples that show how things work.
+
+runner.pl is a stub -- eventually when we have a plugin loader, it should go away.
+
+Advanced Features
+=================
+
+examples_t/AdvancedExcample.pm shows some neat tricks.  
+
+* setup() and teardown() hooks
+* passing state between test cases
+* executing a single test without running the whole suite (runner.pl)
 
 Example Report Output
 =====================
