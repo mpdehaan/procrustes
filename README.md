@@ -41,6 +41,9 @@ plugin loader system.
 Example Report Output
 =====================
 
+Each test prints a seperate summary of tests and failures, so you can see a full list of what cases
+failed, in plain English.
+
     Success Summary
     ---------------
     0.000000 s | Something that returns true
@@ -52,6 +55,21 @@ Example Report Output
     0.000000 s |  Something that raises an exception
 
     passed: (2/4) 50.00% 
+
+Example Summary Output
+======================
+
+At the end of a test suite run, a summary is included showing which tests had successes and failures, intended
+for integration with continuous integration systems like Jenkins or Cruise Control.
+
+Tests can also be used as a lightweigt performance metric by comparing test times on multiple branches.
+Benchmark module integration is a possible feature.
+
+          time s | suite                                              |     passed |     failed |    %failed
+      0.000000 s | Testing good stuff                                 |          2 |          0 |       0.00
+      2.000000 s | Another test suite...                              |          1 |          2 |      66.67
+      2.000000 s | TOTAL                                              |          3 |          2 |      40.00
+
 
 License
 =======
