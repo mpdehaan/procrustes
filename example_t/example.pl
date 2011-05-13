@@ -11,8 +11,13 @@ $tester->test([
         return 1;
     },
 
+    "Something that takes a while", sub {
+        sleep(3);
+        return 1;
+    },
+
     "Something that raises an exception", sub {
         die "boom";
     },
 
-]);
+])->report();

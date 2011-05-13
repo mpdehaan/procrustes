@@ -37,7 +37,7 @@ class Procrustes {
   
          # TODO: create some sort of test result object that each test case adds to...
          foreach my $test (@{$self->test_cases()}) {
-               print "running case: " . $test->case_name() . "\n";      
+               print "**** running: " . $test->case_name() . "\n";      
                $test->run($test_results);
          }
          return $test_results;

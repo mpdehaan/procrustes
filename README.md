@@ -29,11 +29,31 @@ use Procrustes;
             return 1;
         },
 
+        "Something that takes a while", sub {
+            sleep(3);
+            return 1;
+        },
+
         "Something that raises an exception", sub {
             die "boom";
         },
 
-    ]);
+    ])->report();
+
+Example Report Output
+=====================
+
+    Success Summary
+    ---------------
+    0.000000 s | Something that returns true
+    3.000000 s | Something that takes a while
+
+    Failure Summary
+    ---------------
+    0.000000 s |  Here's something that returns false
+    0.000000 s |  Something that raises an exception
+
+    passed: (2/4) 50.00% 
 
 License
 =======
