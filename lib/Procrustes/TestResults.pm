@@ -16,7 +16,10 @@ class Procrustes::TestResults {
         # FIXME: use the Moose array push traits thingy
         my $fails = $self->failures();
         push @$fails, $failure;
-        print "    -> FAILED: " . $failure->case->case_name() . "\n";
+        if (defined $failure->error()) {
+            print $failure->error(); # trimmed stack trace
+        }
+        print "       FAILED\n";
         $self->failures($fails);
         return $failure;
     }
