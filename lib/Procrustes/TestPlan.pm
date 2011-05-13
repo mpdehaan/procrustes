@@ -1,3 +1,8 @@
+# A testplan is a named list of test cases.  Test plans are created by TestPlugins and use the setup/teardown
+# hooks as defined in those test plugins.   Basically you can think of a TestPlan as what happens when we
+# evaluate a plugin and decide to create all of the various objects implied by it's "plan" method, and also
+# the actor that processes the test cases it then produces to generate results.  This is the main body
+# of the test program.
 
 use MooseX::Declare;
 

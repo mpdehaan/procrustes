@@ -1,3 +1,4 @@
+# A TestCase has a name and some code to run.  Once run, we keep track of how long it takes to run.
 
 use MooseX::Declare;
 
@@ -12,26 +13,36 @@ class Procrustes::TestCase {
     has test_block => (isa => 'CodeRef',  is => 'rw', required => 1);
     has duration   => (isa => 'Int',      is => 'rw', required => 0,  default => 0, init_arg => undef);
 
+    # run the testcase
     action run($test_results, $hooks_instance) {
 
-        $hooks_instance->setup(); # consider running in eval
+        # the setup hook is rerun before every single case in a TestPlan
+        $hooks_instance->setup();
+
+        # keep track of the test start time so we can determine duration
         my $start = DateTime->now();
 
+        # catch errors as we go and convert them into failures
         eval {
+
+            # now run the main test block
             my $result = $self->test_block()->();
             my $end = DateTime->now();
             $hooks_instance->teardown();
             $self->duration($end->epoch() - $start->epoch());
+
+            # check the return code of the case
             unless ($result) {
                 my $failure = Procrustes::TestCaseFailure->new(case => $self, result => $result);
                 return $test_results->add_failure($failure);
             } else {
                 return $test_results->add_success($self);
             }
+
         } or do {
+
+            # there was an exception  
             my $trace = Devel::StackTrace->new();
-            
-            # TODO: when we have a traceback, log a *short* traceback using Devel::StackTrace
             my $error = $@;
             my $end = DateTime->now();
             $hooks_instance->teardown();

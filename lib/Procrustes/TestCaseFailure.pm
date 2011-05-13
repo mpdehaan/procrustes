@@ -1,3 +1,4 @@
+# object to keep track of failed test case results -- could either be a non-zero return or a traceback
 
 use MooseX::Declare;
 

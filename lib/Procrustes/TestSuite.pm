@@ -1,3 +1,6 @@
+# a TestSuite is a list of TestPlans, and also contains, once executed, a list of TestResults
+# this class is used to kick off the TestPlans as well, and can produce a report summarizing
+# all of the results.
 
 use MooseX::Declare;
 
@@ -9,6 +12,11 @@ class Procrustes::TestSuite {
     has test_plans   => (isa => 'ArrayRef[Procrustes::TestPlan]', is => 'rw'); 
     has test_results => (isa => 'ArrayRef[Procrustes::TestResults]', is => 'rw'); 
 
+    # a TestPlugin is how plans are defined, and is needed because these also define
+    # setup() and teardown() methods, but can ALSO define other helper methods to be
+    # useful in the test.  
+    # 
+    # TODO: add a plugin loader that loads from .d style directories
     action add_plugin($plugin) {
         # currently each plugin can only have one plan, which isn't so interesting.
         my $plan = $plugin->plan();
@@ -19,7 +27,7 @@ class Procrustes::TestSuite {
         return $self;
     }
 
-    # run the plans
+    # run the plans that all of the plugins have already defined
     action go() {
 
         foreach my $plan (@{$self->test_plans()}) {
@@ -65,7 +73,7 @@ class Procrustes::TestSuite {
             print "all tests passed.\n\n";
         }
 
-
+        # the return code is the number of failed tests, ergo success == 0, as we like it for Unix returns
         return $total_failed;
     }
 

@@ -1,3 +1,5 @@
+# Test Results are a list of the successes and failures of testcases from the result of executing just *one* test plan.
+# (a TestSuite can contain many plans)
 
 use MooseX::Declare;
 
@@ -12,6 +14,7 @@ class Procrustes::TestResults {
     has plan_name  => (isa => 'Str', is => 'rw', required => 1);
  
 
+    # add a failure onto the list
     action add_failure($failure) {
         # FIXME: use the Moose array push traits thingy
         my $fails = $self->failures();
@@ -24,6 +27,7 @@ class Procrustes::TestResults {
         return $failure;
     }
 
+    # add a success onto the list
     action add_success($case) {
         # FIXME: use the Moose array push traits thingy
         my $works = $self->successes();
@@ -32,6 +36,7 @@ class Procrustes::TestResults {
         return $case;
     }
 
+    # how long did this test plan take to run?  Add up the individual cases.
     action duration() {
         my $total = 0;
         foreach my $result (@{$self->failures()}) { $total += $result->case->duration() };
@@ -39,28 +44,35 @@ class Procrustes::TestResults {
         return $total;
     }
 
+    # how many tests failed?
     action failure_count() {
         return scalar @{$self->failures()};
     }
 
+    # how many tests passed?
     action success_count() {
         return scalar @{$self->successes()};
     }
   
+    # how many test cases were run total in this plan?
     action total_count() {
         return $self->failure_count() + $self->success_count();
     }
 
+    # what percentage of tests passed?
     action passed_percent() {
         return 0 unless $self->total_count();
         return sprintf "%.2f", ($self->success_count() / $self->total_count()) * 100;
     }
     
+    # what percentage of tests failed?
     action failed_percent() {
         return 0 unless $self->total_count();
         return sprintf "%.2f", ($self->failure_count() / $self->total_count()) * 100;
     }
 
+    # print a summary of the tests
+    # TODO: return a buffer rather than using print/printf
     action report() {
         print "\n";
         print "    Success Summary\n";

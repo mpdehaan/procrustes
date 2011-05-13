@@ -4,6 +4,7 @@ class Procrustes::TestPlugin {
 
     use Method::Signatures::Simple name => 'action';
 
+    # method that we call to return some plans
     action plan() {
         die "override me to define a plan";
     }
@@ -14,6 +15,7 @@ class Procrustes::TestPlugin {
     action teardown() {
     }
 
+    # syntactic sugar, see the examples_t/ directory
     action describe($name, $coderefs) {
          return Procrustes::TestPlan->new()->describe($name, $coderefs);
     }
