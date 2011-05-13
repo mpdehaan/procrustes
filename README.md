@@ -16,29 +16,27 @@ Better reporting, including benchmarks for each test, and easier profiling/cover
 Usage
 =====
 
-use Procrustes;
+    return Procrustes::TestPlan->new()->describe("Another test suite...", [
 
-    my $tester = Procrustes->new();
-    $tester->test([
+            "This is doomed to fail", sub {
+                return 2 == 3;
+            },
 
-        "Here's something that returns false", sub {
-            return 2 == 3;
-        },
+            "This should work", sub {
+                sleep(2);
+                return 1;
+            },
 
-        "Something that returns true", sub {
-            return 1;
-        },
+            "This won't work", sub {
+                die "kaboom!\n"
+            },
 
-        "Something that takes a while", sub {
-            sleep(3);
-            return 1;
-        },
+    ]);
 
-        "Something that raises an exception", sub {
-            die "boom";
-        },
 
-    ])->report();
+There's a bit of extra class syntax around describing "TestPlugins", which are only temporary until we have a more dynamic
+plugin loader system.
+
 
 Example Report Output
 =====================
