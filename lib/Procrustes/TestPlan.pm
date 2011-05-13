@@ -10,6 +10,7 @@ class Procrustes::TestPlan {
     # data attributes
     has plan_name   => (isa => 'Str', is => 'rw', required => 0, default => '', init_arg => undef,);
     has test_cases  => (isa => 'ArrayRef[Procrustes::TestCase]', is => 'rw');
+    has hooks_instance => (isa => 'Object', is => 'rw', required => 0);
 
     # produce a single test case, analogous to a RSpec "describe do", more or less
     action _create_single_test($case_name, $test_block) {
@@ -43,7 +44,7 @@ class Procrustes::TestPlan {
          print "**** EXECUTING PLAN: " . $self->plan_name() . "\n";
          foreach my $test (@{$self->test_cases()}) {
                print "    -> running: " . $test->case_name() . "\n";      
-               $test->run($test_results);
+               $test->run($test_results, $self->hooks_instance());
          }
          return $test_results;
     }

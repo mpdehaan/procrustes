@@ -1,6 +1,6 @@
 use MooseX::Declare;
 
-class AnotherTest {
+class AnotherTest extends Procrustes::TestPlugin {
 
     use Procrustes::TestPlan;
     use Method::Signatures::Simple name => 'action';

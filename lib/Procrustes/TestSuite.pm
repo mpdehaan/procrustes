@@ -10,7 +10,9 @@ class Procrustes::TestSuite {
     has test_results => (isa => 'ArrayRef[Procrustes::TestResults]', is => 'rw'); 
 
     action add_plugin($plugin) {
+        # currently each plugin can only have one plan, which isn't so interesting.
         my $plan = $plugin->plan();
+        $plan->hooks_instance($plugin); # where are setup/teardown defined?
         my $plans = $self->test_plans();
         push @{$plans}, $plan;
         $self->test_plans($plans);

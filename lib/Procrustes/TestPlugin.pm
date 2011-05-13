@@ -8,4 +8,10 @@ class Procrustes::TestPlugin {
         die "override me to define a plan";
     }
 
+    action setup() {
+    }
+
+    action teardown() {
+    }
+
 }

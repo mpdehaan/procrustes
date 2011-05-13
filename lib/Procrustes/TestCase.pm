@@ -13,12 +13,15 @@ class Procrustes::TestCase {
     has test_block => (isa => 'CodeRef',  is => 'rw', required => 1);
     has duration   => (isa => 'Int',      is => 'rw', required => 0,  default => 0, init_arg => undef);
 
-    action run($test_results) {
+    action run($test_results, $hooks_instance) {
 
+        $hooks_instance->setup(); # consider running in eval
         my $start = DateTime->now();
+
         eval {
             my $result = $self->test_block()->();
             my $end = DateTime->now();
+            $hooks_instance->teardown();
             $self->duration($end->epoch() - $start->epoch());
             unless ($result) {
                 my $failure = Procrustes::TestCaseFailure->new(case => $self, result => $result);
@@ -30,6 +33,7 @@ class Procrustes::TestCase {
             # TODO: when we have a traceback, log a *short* traceback using Devel::StackTrace
             my $error = $@;
             my $end = DateTime->now();
+            $hooks_instance->teardown();
             $self->duration($end->epoch() - $start->epoch());
             my $err = $_;
             my $failure = Procrustes::TestCaseFailure->new(case => $self, error => $error);

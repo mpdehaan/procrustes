@@ -1,6 +1,6 @@
 use MooseX::Declare;
 
-class PassThis {
+class PassThis extends Procrustes::TestPlugin {
 
     use Method::Signatures::Simple name => 'action';
     # TODO: how about inheritance instead, reduce some boilerplate
