@@ -5,9 +5,15 @@ class AnotherTest extends Procrustes::TestPlugin {
     use Procrustes::TestPlan;
     use Method::Signatures::Simple name => 'action';
 
-    sub plan() {
+    action setup() {
+    }
+
+    action teardown() {
+    }
+
+    action plan() {
         
-        return Procrustes::TestPlan->new()->describe("Another test suite...", [
+        $self->describe("Another test suite...", [
 
             "This is doomed to fail", sub {
                 return 2 == 3;

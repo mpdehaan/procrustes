@@ -9,7 +9,7 @@ class PassThis extends Procrustes::TestPlugin {
 
     action plan() {
 
-        return Procrustes::TestPlan->new()->describe("Testing good stuff", [
+        return $self->describe("Testing good stuff", [
             "This should work", sub {
                 return 1;
             },

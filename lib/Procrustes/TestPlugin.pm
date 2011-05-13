@@ -14,4 +14,8 @@ class Procrustes::TestPlugin {
     action teardown() {
     }
 
+    action describe($name, $coderefs) {
+         return Procrustes::TestPlan->new()->describe($name, $coderefs);
+    }
+
 }
