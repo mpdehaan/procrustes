@@ -1,7 +1,7 @@
 Procrustes
 ==========
 
-From Greek methology, Procrustes was an extreme tester.  In Perl land, I grew envious of RSpec and wanted
+From Greek mythology, Procrustes was an extreme tester.  In Perl land, I grew envious of RSpec and wanted
 to do extreme testing.   
 
 I liked some of the descriptiveness of RSpec, but I also did not like some of the idioms.  This is an evolving
