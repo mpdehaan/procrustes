@@ -1,14 +1,17 @@
 
 use MooseX::Declare;
 
-class Procrustes {
+# TODO: This is really a TestSuite class
+
+class Procrustes::TestPlan {
 
     use Method::Signatures::Simple name => 'action';
     use Procrustes::TestCase;
     use Procrustes::TestResults;
 
     # data attributes
-    has test_cases  => (isa => 'ArrayRef[Procrustes::TestCase]', is => 'rw', default => sub { 
+    has plan_name   => (isa => 'Str', is => 'rw', required => 0, init_arg => undef,);
+    has test_cases  => (isa => 'ArrayRef[Procrustes::TestCase]', is => 'rw', init_arg => undef, default => sub { 
          return [] }
     );
 
@@ -25,8 +28,8 @@ class Procrustes {
     }
 
     # run a whole set of tests
-    action test($tests) {
-         my $test_results = Procrustes::TestResults->new();
+    action describe($plan_name, $tests) {
+         $self->plan_name($plan_name);
          while(1) {
                my $case_name  = shift(@$tests);
                last unless $case_name;
@@ -34,7 +37,11 @@ class Procrustes {
                die "missing block" unless $test_block;
                $self->_create_single_test($case_name, $test_block);
          }
-  
+         return $self;
+    }
+    
+    action go() {
+         my $test_results = Procrustes::TestResults->new();
          # TODO: create some sort of test result object that each test case adds to...
          foreach my $test (@{$self->test_cases()}) {
                print "**** running: " . $test->case_name() . "\n";      

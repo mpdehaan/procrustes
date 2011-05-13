@@ -1,7 +1,7 @@
-use Procrustes;
+use Procrustes::TestPlan;
 
-my $tester = Procrustes->new();
-$tester->test([
+my $plan = Procrustes::TestPlan->new();
+$plan->describe("About some module...", [
 
     "Here's something that returns false", sub {
         return 2 == 3;
@@ -20,4 +20,4 @@ $tester->test([
         die "boom";
     },
 
-])->report();
+])->go()->report();
